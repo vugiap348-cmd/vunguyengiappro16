@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đề Kiểm Tra Lịch Sử Số 17</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .timer.warning {
+            background: rgba(255,0,0,0.3);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 30px 0 20px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .option {
+            margin: 10px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 4px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .document-box {
+            background: #fff8dc;
+            border: 2px solid #daa520;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            background: #e8f5e9;
+            border: 3px solid #4caf50;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2e7d32;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .correct {
+            background: #c8e6c9 !important;
+            border-left-color: #4caf50 !important;
+        }
+
+        .incorrect {
+            background: #ffcdd2 !important;
+            border-left-color: #f44336 !important;
+        }
+
+        .correct-answer {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .user-answer {
+            color: #c62828;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .instruction {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .part2-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ĐỀ KIỂM TRA SỐ 17 - MÔN LỊCH SỬ</h1>
+            <div class="timer" id="timer">Thời gian: 45:00</div>
+        </div>
+
+        <div class="content">
+            <div class="instruction">
+                <strong>Hướng dẫn:</strong><br>
+                - Phần I: Mỗi câu hỏi chỉ chọn một phương án (24 câu × 0.25 điểm = 6 điểm)<br>
+                - Phần II: Mỗi câu có 4 ý a, b, c, d - chọn Đúng hoặc Sai (4 câu, thang điểm: 1 ý đúng = 0.1đ, 2 ý = 0.25đ, 3 ý = 0.5đ, 4 ý = 1.0đ)<br>
+                - Thời gian làm bài: 45 phút<br>
+                - Nhấn "Nộp bài" để xem kết quả và đáp án
+            </div>
+
+            <div class="section-title">PHẦN I: Thí sinh trả lời câu hỏi từ 1 đến 24. Mỗi câu hỏi thí sinh chỉ chọn một phương án.</div>
+            
+            <div id="part1-questions"></div>
+
+            <div class="section-title">PHẦN II: Thí sinh trả lời câu hỏi từ 1 đến 4. Trong mỗi ý a), b), c), d) ở mỗi câu, thí sinh chọn đúng hoặc sai.</div>
+            
+            <div id="part2-questions"></div>
+
+            <button class="submit-btn" id="submitBtn">Nộp bài</button>
+
+            <div class="result-box" id="resultBox">
+                <h2 style="text-align: center; color: #2e7d32;">KẾT QUẢ BÀI KIỂM TRA</h2>
+                <div class="score" id="scoreDisplay"></div>
+                <div id="detailScore"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const part1Questions = [
+            {id: 1, question: "Thành tựu tiêu biểu về khoa học kỹ thuật của Trung Quốc đạt được vào năm 2003 là", options: ["chế tạo thành công bom nguyên tử.", "phóng thành công tàu Thần Châu 5.", "ngành công nghệ sinh học phát triển.", "xây dựng thành công đập Tam Hiệp."], correct: 1},
+            {id: 2, question: "Nội dung nào sau đây phản ánh đúng khó khăn, thử thách mà Cu-ba phải đương đầu sau năm 1959?", options: ["Hậu quả nặng nề của chủ nghĩa thực dân cũ.", "Mỹ cấm vận về kinh tế, đe dọa về quân sự.", "Nhân dân không ủng hộ chính quyền mới.", "Chính quyền mới không nắm được quân đội."], correct: 1},
+            {id: 3, question: "Nội dung nào sau đây không phải là bối cảnh dẫn đến sự bùng nổ của cuộc khởi nghĩa Lam Sơn (1418 - 1427)?", options: ["Các mâu thuẫn xã hội trầm trọng.", "Đại Việt đang bị nhà Minh cai trị.", "Nguy cơ bị ngoại xâm dòm ngó.", "Đời sống nhân dân khốn cùng."], correct: 2},
+            {id: 4, question: "Nguyên nhân nào sau đây giải thích việc người Việt đã đánh bại âm mưu đồng hóa do các triều đại phong kiến Trung Hoa tiến hành thời Bắc thuộc?", options: ["Nền kinh tế công nghiệp phát triển.", "Tính cộng đồng, tinh thần yêu nước.", "Giữ được hầu hết phong tục tập quán.", "Tiếp thu văn hóa Trung Hoa, Ấn Độ."], correct: 1},
+            {id: 5, question: "Một trong những nội dung của mục tiêu, hành động mang tính toàn cầu đến năm 2030 của Liên hợp quốc là gì?", options: ["Chống thất nạn nghiệp.", "Quyền tự do chính trị.", "Chống bạo lực gia đình.", "Nước sạch và vệ sinh."], correct: 3},
+            {id: 6, question: "Sự ra đời của khối NATO (1949) và Tổ chức Hiệp ước Vácsava (1955) dẫn đến hệ quả gì trong quan hệ quốc tế?", options: ["Đã đánh dấu sự phát triển vượt bậc của hai nước.", "Chấm dứt mối quan hệ đồng minh giữa Xô - Mĩ.", "Hàng loạt các tổ chức quân sự trên thế giới ra đời.", "Đánh dấu sự xác lập của cục diện hai cực, hai phe."], correct: 3},
+            {id: 7, question: "Ngay sau khi Chiến tranh thế giới thứ hai kết thúc, quốc gia nào tuyên bố độc lập và thành lập nước cộng hòa sớm nhất ở khu vực Đông Nam Á?", options: ["Inđônêxia.", "Việt Nam.", "Campuchia.", "Singapo."], correct: 0},
+            {id: 8, question: "Hội nghị cấp cao lần thứ nhất của tổ chức ASEAN họp tại Bali (Inđônêxia) tháng 2-1976), với việc kí Hiệp ước Bali có ý nghĩa", options: ["đánh dấu mốc cho sự ra đời của tổ chức ASEAN.", "chấm dứt sự đối đầu giữa các nước trong khu vực.", "đánh dấu bước phát triển mới của tổ chức ASEAN.", "ASEAN hoàn thành quá trình mở rộng thành viên."], correct: 2},
+            {id: 9, question: "Một trong những khó khăn mà các nước Đông Nam Á phải đường đầu khi quyết định xây dựng Cộng đồng chính trị - an ninh (APSC) là", options: ["còn một số quốc gia chưa giành được độc lập.", "mâu thuẫn, xung đột vẫn tồn tại trong nội khối.", "ảnh hưởng đến chủ quyền quốc gia, dân tộc.", "nguy cơ đánh mất bản sắc văn hóa dân tộc."], correct: 1},
+            {id: 10, question: "Nội dung nào sau đây không phải là đường lối của cuộc kháng chiến chống Pháp (1945 – 1954) được Đảng Cộng sản Đông Dương đề ra?", options: ["Toàn dân.", "Toàn đảng.", "Toàn diện.", "Trường kỳ."], correct: 1},
+            {id: 11, question: "Ngày 9-8-1945, quân đội Mỹ đã có hành dộng nào sau đây để nhanh chóng kết thúc Chiến tranh thế giới thứ hai?", options: ["Tấn công vào quân đội Đức ở Béc-lin.", "Ném bom nguyên tử xuống Nhật Bản.", "Tiêu diệt quân đội Nhật ở Đông Dương.", "Truy quét tàn dư quân đội phát xít Đức."], correct: 1},
+            {id: 12, question: "Nguyên nhân nào sau đây khiến cho cách mạng miền Nam Việt Nam tổn thất nặng nề trong giai đoạn 1954 - 1957?", options: ["Không nhận được chi viện của miền Bắc.", "Mỹ Diệm khủng bố, đàn áp cách mạng.", "Sự chống phá của các thế lực bên ngoài.", "Trung Quốc không ủng hộ kháng chiến."], correct: 1},
+            {id: 13, question: "Thực chất, các \"Ấp chiến lược\" mà Mỹ và tay sai lập ra ở miền Nam Việt Nam trong chiến tranh đặc biệt là", options: ["những trại tập trung trá hình.", "những đặc khu kinh tế mới.", "những vùng đất đã giải phóng.", "những căn cứ quân sự mới."], correct: 0},
+            {id: 14, question: "Nội dung cơ bản về kinh tế của đường lối đổi mới trong giai đoạn 1986-1995 ở Việt Nam là", options: ["thay đổi quan niệm về chủ nghĩa xã hội.", "không thay đổi mục tiêu xã hội chủ nghĩa.", "lấy đổi mới chính trị là nhiệm vụ trọng tâm.", "từng bước xoá bỏ cơ chế quản lí kinh tế cũ."], correct: 3},
+            {id: 15, question: "Nội dung nào sau đây là nguyên nhân giải thích cho việc Đảng Cộng sản Việt Nam xác định đổi mới kinh tế làm trọng tâm?", options: ["Các thế lực thù địch phá hoại kinh tế.", "Cơ chế kinh tế bao cấp không phù hợp.", "Không tác động đến vấn đề chính trị.", "Đây là điều kiện tiên quyết để đổi mới."], correct: 1},
+            {id: 16, question: "Sự kiện nào sau đây diễn ra năm 1995?", options: ["Việt Nam gia nhập tổ chức ASEAN.", "Việt Nam gia nhập Liên hợp quốc.", "Việt – Trung bình thường hóa quan hệ.", "Hiệp định hoà bình Pa-ri được ký kết."], correct: 0},
+            {id: 17, question: "Trong quá trình hoạt động và lãnh đạo cách mạng Việt Nam Nguyễn Ái Quốc không tham gia thành lập tổ chức nào sau đây?", options: ["Cộng sản đoàn.", "Mặt trận Việt Minh.", "Hội Liên hiệp thuộc địa.", "Duy Tân hội."], correct: 3},
+            {id: 18, question: "Nội dung nào sau đây phản ánh đúng kết quả mà cách mạng Việt Nam đạt được khi ký Hiệp định Paris năm 1973?", options: ["Đánh bại hoàn toàn đế quốc Mỹ.", "Tạo ra so sánh lực lượng có lợi.", "Thống nhất đất nước về lãnh thổ.", "Nhận được sự viện trợ lớn từ Nhật."], correct: 1},
+            {id: 19, question: "Nguyễn Tất Thành quyết định chọn hướng đi nào sau đây để mở đầu cuộc hành trình tìm đường cứu nước cho dân tộc Việt Nam?", options: ["Tìm đường sang Nhật", "Tìm đường sang Nga.", "Đi xuống phương Nam.", "Hướng về phương Tây."], correct: 3},
+            {id: 20, question: "Nội dung nào sau đây thể hiện đúng vai trò của Chủ tịch Hồ Chí Minh đối với thắng lợi của chiến dịch Biên giới năm 1950?", options: ["Tổng tư lệnh, trực tiếp chỉ huy chiến dịch.", "Bí thư đảng ủy, chỉ huy trưởng chiến dịch.", "Ra mặt trận, chỉ huy và động viên bộ đội.", "Đảm bảo cung cấp hậu cần cho chiến dịch."], correct: 2},
+            {id: 21, question: "Nhận định nào sau đây là đúng về vai trò của Chủ tịch Hồ Chí Minh trong cuộc kháng chiến chống thực dân Pháp (1945-1954)?", options: ["Trực tiếp vạch ra những vấn đề chiến lược cho kháng chiến.", "Lãnh đạo nhân dân hai miền đấu tranh thống nhất đất nước.", "Đề ra những nhiệm vụ cho cách mạng từng miền và cả nước.", "Đề ra nhiệm vụ xây dựng chủ nghĩa xã hội trong chiến tranh."], correct: 0},
+            {id: 22, question: "Đảng Cộng sản Việt Nam đề ra chính sách đối ngoại hòa bình, hữu nghị và hợp tác  trong công cuộc đổi mới đất nước vì nguyên nhân nào sau đây?", options: ["Hòa bình, hữu nghị là khát vọng, xu thế phát triển của quan hệ quốc tế.", "Nhằm phá thế bao vây, cấm vận, đưa đất nước phát triển mạnh mẽ.", "Tạo điều kiện quốc tế thuận lợi để chủ động, tích cực hội nhập quốc tế.", "Đáp ứng lợi ích của đất nước, phù hợp với xu thế phát triển của thế giới."], correct: 3},
+            {id: 23, question: "Thực tiễn hai cuộc kháng chiến chống thực dân Pháp xâm lược (1945 – 1954) và kháng chiến chống Mĩ, cứu nước (1954 – 1975) của nhân dân Việt Nam cho thấy: đấu tranh ngoại giao muốn đạt kết quả cao thì cần phải", options: ["tranh thủ được sự ủng hộ của các nước lớn và dư luận quốc tế.", "thực hiện đồng thời hai nhiệm vụ chiến lược ở hai miền đất nước.", "coi trọng và ra sức xây dựng hậu phương kháng chiến vững mạnh.", "tạo thế và lực trên chiến trường, lấy ngoại giao làm mặt trận chủ yếu."], correct: 0},
+            {id: 24, question: "Nhận định nào sau đây là không đúng về những chính sách mà Việt Nam có thể áp dụng để hội nhập kinh tế thành công với thế giới?", options: ["Xây dựng nền kinh tế tự chủ, phát huy lợi thế đất nước.", "Mở cửa tiếp nhận đầu tư vốn từ các quốc gia trên thế giới.", "Cải cách sâu nền kinh tế nhằm tăng cường sức cạnh tranh.", "Tham gia vào các liên minh quân sự để được nhận viện trợ."], correct: 3}
+        ];
+
+        const part2Questions = [
+            {
+                id: 1,
+                question: "Cho đoạn tư liệu sau đây:",
+                document: 'Chủ trương của Đại hội Đảng lần thứ VI là cùng với việc đẩy nhanh đổi mới cơ chế quản lý kinh tế, cần phải đổi mới tư duy ngoại giao, tranh thủ những điều kiện ưu đãi của bên ngoài để phát triển kinh tế đối ngoại, phục vụ cho công cuộc đổi mới của đất nước. Trong bối cảnh quốc tế phức tạp, Việt Nam chủ trương kiên trì thực hiện chính sách đối ngoại hòa bình và hữu nghị; mở rộng quan hệ kinh tế, khoa học kỹ thuật với tất cả các nước, trong đó có các nước công nghiệp phát triển, các tổ chức quốc tế và tư nhân nước ngoài trên nguyên tắc bình đẳng cùng có lợi.<br><em>Nguyễn Ngọc Mão (Chủ biên), Lịch sử Việt Nam, tập 15, NXB. Khoa học xã hội 2017, tr. 88</em>',
+                subQuestions: [
+                    {id: 'a', text: "Tư liệu đề cập đến quan điểm đổi mới của ngoại giao Việt Nam trong công cuộc đổi mới đất nước từ năm 1986.", correct: true},
+                    {id: 'b', text: "Từ năm 1986, Việt Nam chính thức đề ra chính sách đối ngoại hòa bình và hữu nghị trên nguyên tắc độc lập, bình đẳng.", correct: false},
+                    {id: 'c', text: "Công cuộc đổi mới đất nước được tiến hành toàn diện và đồng bộ, trong đó đổi mới ngoại giao là nội dung quan trọng.", correct: true},
+                    {id: 'd', text: "Trong công cuộc đổi mới, Việt Nam ưu tiên phát triển quan hệ kinh tế đối ngoại, lấy đó làm trọng tâm của đổi mới.", correct: false}
+                ]
+            },
+            {
+                id: 2,
+                question: "Cho những thông tin trong bảng sau đây:",
+                document: '<table><tr><th>Thời gian</th><th>Sự kiện</th></tr><tr><td>Ngày 16 tháng 8</td><td>Giải phóng thị xã Thái Nguyên</td></tr><tr><td>Ngày 18 tháng 8</td><td>Bắc Giang, Hải Dương, Hà Tĩnh, Quảng Nam giành được chính quyền ở tỉnh lị sớm nhất cả nước.</td></tr><tr><td>Ngày 19 tháng 8</td><td>Khởi nghĩa thắng lợi ở Hà Nội</td></tr><tr><td>Ngày 23 tháng 8</td><td>Khởi nghĩa thắng lợi ở Huế</td></tr><tr><td>Ngày 25 tháng 8</td><td>Khởi nghĩa thắng lợi ở Sài Gòn</td></tr></table>',
+                subQuestions: [
+                    {id: 'a', text: "Bảng tư liệu đề cập đến những mốc thắng lợi quan trọng của Tổng khởi nghĩa trong cách mạng tháng Tám năm 1945 ở Việt Nam.", correct: true},
+                    {id: 'b', text: "Trong cách mạng tháng Tám, thắng lợi ở các đô thị lớn có vai trò quan trọng, thúc đẩy thắng lợi của cách mạng trên cả nước.", correct: true},
+                    {id: 'c', text: "Thắng lợi ở Huế ngày 23 tháng 8 đã chấm dứt chế độ quân chủ chuyên chế nhà Nguyễn, lập nên nhà nước dân chủ cộng hòa.", correct: false},
+                    {id: 'd', text: "Tổng khởi nghĩa diễn ra nhanh chóng và có diễn tiến tương đối hòa bình là một ưu điểm của cách mạng tháng Tám ở Việt Nam.", correct: true}
+                ]
+            },
+            {
+                id: 3,
+                question: "Cho đoạn tư liệu sau đây:",
+                document: 'Với những bước tiến về chính trị, quân sự và nhất là về ngoại giao trong giai đoạn 1947 – 1950, từ ngày 11 đến 19-2-1951, Đảng Cộng sản Đông Dương tiến hành Đại hội Đảng lần thứ II tại Tuyên Quang, tại Đại hội, đường lối đối ngoại được xác định với các nội dung cơ bản: Xác định kẻ thù chính của cách mạng Việt Nam là thực dân Pháp và can thiệp Mỹ. Thành lập ở 3 nước Đông Dương mỗi nước có một chính đảng cộng sản riêng tùy vào điều kiện cụ thể của từng nước, ở Việt Nam lấy tên là Đảng Lao động Việt Nam. Thành lập liên minh Việt – Miên – Lào, Việt Nam ra sức giúp đỡ Lào và Campuchia kháng chiến.<br><em>Phạm Đức Thuận: Giáo trình Lịch sử ngoại giao Việt Nam, NXB Đại học Cần Thơ, 2018, tr 118</em>',
+                subQuestions: [
+                    {id: 'a', text: "Tư liệu đề cập đến một trong những nội dung cơ bản của Đại hội đại biểu lần thứ hai của Đảng Cộng sản Đông Dương.", correct: true},
+                    {id: 'b', text: "Đại hội đại biểu lần thứ hai của Đảng Cộng sản Đông Dương đã đề ra đường lối đổi mới về hoạt động đối ngoại.", correct: false},
+                    {id: 'c', text: "Trong Đại hội đại biểu lần thứ hai, Đảng Lao động Việt Nam được thành lập để lãnh đạo 3 nước Đông Dương.", correct: false},
+                    {id: 'd', text: "Đại hội đại biểu lần thứ hai đã hoàn chỉnh quan điểm của tư tưởng Hồ Chí Minh về quyền dân tộc tự quyết.", correct: true}
+                ]
+            },
+            {
+                id: 4,
+                question: "Cho đoạn tư liệu sau đây:",
+                document: '"Tháng 3-1947, Tổng thống Tơruman đã đọc diễn văn trước Quốc hội Mĩ, chính thức đưa ra "chủ nghĩa Tơruman". Theo Tơruman thì các nước Đông Âu "vừa mới bị cộng sản thôn tính". Vì vậy, Mĩ phải đứng ra "đảm nhiệm sứ mạng lãnh đạo thế giới tự do", phải "giúp đỡ" cho các dân tộc trên thế giới chống lại "sự đe doạ" của chủ nghĩa cộng sản, chống lại sự "bành trướng" của nước Nga, giúp đỡ bằng mọi biện pháp kinh tế, quân sự. Tổng thống Mĩ Toruman đã phát động cuộc "chiến tranh lạnh" chống Liên Xô và các nước xã hội chủ nghĩa."<br><em>Nguyễn Anh Thái: Lịch sử thế giới hiện đại (1917 - 1995), NXB Giáo dục Việt Nam, Hà Nội, 2006, tr 235</em>',
+                subQuestions: [
+                    {id: 'a', text: "Tư liệu đề cập đến sự kiện được coi như là khởi đầu của cuộc Chiến tranh lạnh.", correct: true},
+                    {id: 'b', text: "Chiến tranh lạnh do Mỹ phát động nhằm chống lại Liên Xô và chủ nghĩa cộng sản.", correct: true},
+                    {id: 'c', text: "Trong Chiến tranh lạnh, Mỹ đã giúp đỡ các dân tộc đứng lên tự giải phóng mình.", correct: false},
+                    {id: 'd', text: "Chiến tranh lạnh đã tạo ra khuôn khổ cho trật tự thế giới mới, trật tự hai cực Ianta.", correct: false}
+                ]
+            }
+        ];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        const shuffledPart1 = part1Questions.map(q => {
+            const shuffledOptions = shuffleArray(q.options.map((opt, idx) => ({text: opt, isCorrect: idx === q.correct})));
+            return {...q, options: shuffledOptions.map(o => o.text), correct: shuffledOptions.findIndex(o => o.isCorrect)};
+        });
+
+        const shuffledPart2 = part2Questions.map(q => ({...q, subQuestions: shuffleArray(q.subQuestions)}));
+
+        function renderPart1() {
+            const container = document.getElementById('part1-questions');
+            shuffledPart1.forEach(q => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.id = 'p1q' + q.id;
+                let html = '<div class="question-title">Câu ' + q.id + '. ' + q.question + '</div><div class="options">';
+                q.options.forEach((option, optIndex) => {
+                    const letter = String.fromCharCode(65 + optIndex);
+                    html += '<div class="option"><input type="radio" name="q' + q.id + '" id="q' + q.id + '_' + optIndex + '" value="' + optIndex + '"><label for="q' + q.id + '_' + optIndex + '">' + letter + '. ' + option + '</label></div>';
+                });
+                html += '</div>';
+                questionDiv.innerHTML = html;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function renderPart2() {
+            const container = document.getElementById('part2-questions');
+            shuffledPart2.forEach(q => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.id = 'p2q' + q.id;
+                let html = '<div class="question-title">Câu ' + q.id + ': ' + q.question + '</div>';
+                html += '<div class="document-box">' + q.document + '</div>';
+                q.subQuestions.forEach(sub => {
+                    html += '<div class="part2-item"><strong>' + sub.id + ')</strong> ' + sub.text + '<br><div style="margin-top: 8px; margin-left: 20px;"><label style="margin-right: 20px;"><input type="radio" name="q' + q.id + '_' + sub.id + '" value="true"> Đúng</label><label><input type="radio" name="q' + q.id + '_' + sub.id + '" value="false"> Sai</label></div></div>';
+                });
+                questionDiv.innerHTML = html;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        let timeLeft = 45 * 60;
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = 'Thời gian: ' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+            if (timeLeft <= 5 * 60) timerElement.classList.add('warning');
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitExam();
+            }
+            timeLeft--;
+        }
+        
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        function gradeExam() {
+            let part1Score = 0, part2Score = 0;
+            const results = {part1: [], part2: []};
+            
+            shuffledPart1.forEach(q => {
+                const selected = document.querySelector('input[name="q' + q.id + '"]:checked');
+                const userAnswer = selected ? parseInt(selected.value) : -1;
+                const isCorrect = userAnswer === q.correct;
+                if (isCorrect) part1Score += 0.25;
+                results.part1.push({id: q.id, correct: isCorrect, userAnswer: userAnswer, correctAnswer: q.correct});
+            });
+            
+            shuffledPart2.forEach(q => {
+                let correctCount = 0;
+                const subResults = [];
+                q.subQuestions.forEach(sub => {
+                    const selected = document.querySelector('input[name="q' + q.id + '_' + sub.id + '"]:checked');
+                    const userAnswer = selected ? selected.value === 'true' : null;
+                    const isCorrect = userAnswer === sub.correct;
+                    if (isCorrect) correctCount++;
+                    subResults.push({id: sub.id, correct: isCorrect, userAnswer: userAnswer, correctAnswer: sub.correct});
+                });
+                if (correctCount === 1) part2Score += 0.1;
+                else if (correctCount === 2) part2Score += 0.25;
+                else if (correctCount === 3) part2Score += 0.5;
+                else if (correctCount === 4) part2Score += 1.0;
+                results.part2.push({id: q.id, correctCount: correctCount, subResults: subResults});
+            });
+            
+            return {
+                part1Score: Math.round(part1Score * 100) / 100,
+                part2Score: Math.round(part2Score * 100) / 100,
+                totalScore: Math.round((part1Score + part2Score) * 100) / 100,
+                results: results
+            };
+        }
+
+        function displayResults(gradeResults) {
+            const resultBox = document.getElementById('resultBox');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const detailScore = document.getElementById('detailScore');
+            
+            scoreDisplay.innerHTML = 'Tổng điểm: ' + gradeResults.totalScore + '/10';
+            detailScore.innerHTML = '<p style="text-align: center; font-size: 18px;">Phần I: ' + gradeResults.part1Score + '/6 điểm<br>Phần II: ' + gradeResults.part2Score + '/4 điểm</p>';
+            resultBox.classList.add('show');
+            
+            gradeResults.results.part1.forEach(r => {
+                const questionDiv = document.getElementById('p1q' + r.id);
+                questionDiv.classList.add(r.correct ? 'correct' : 'incorrect');
+                if (!r.correct) {
+                    const correctLetter = String.fromCharCode(65 + r.correctAnswer);
+                    const userLetter = r.userAnswer >= 0 ? String.fromCharCode(65 + r.userAnswer) : 'Không chọn';
+                    const answerInfo = document.createElement('div');
+                    answerInfo.innerHTML = '<div class="user-answer">Bạn chọn: ' + userLetter + '</div><div class="correct-answer">Đáp án đúng: ' + correctLetter + '</div>';
+                    questionDiv.appendChild(answerInfo);
+                }
+            });
+            
+            gradeResults.results.part2.forEach(r => {
+                const questionDiv = document.getElementById('p2q' + r.id);
+                questionDiv.classList.add(r.correctCount === 4 ? 'correct' : 'incorrect');
+                const answerInfo = document.createElement('div');
+                answerInfo.innerHTML = '<div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-radius: 5px;"><strong>Kết quả: ' + r.correctCount + '/4 ý đúng</strong><br>';
+                r.subResults.forEach(sub => {
+                    const icon = sub.correct ? '✓' : '✗';
+                    const color = sub.correct ? '#2e7d32' : '#c62828';
+                    const userText = sub.userAnswer === null ? 'Không chọn' : (sub.userAnswer ? 'Đúng' : 'Sai');
+                    const correctText = sub.correctAnswer ? 'Đúng' : 'Sai';
+                    answerInfo.innerHTML += '<div style="margin: 5px 0; color: ' + color + ';">' + icon + ' <strong>' + sub.id + ')</strong> Bạn chọn: <strong>' + userText + '</strong> - Đáp án: <strong>' + correctText + '</strong></div>';
+                });
+                answerInfo.innerHTML += '</div>';
+                questionDiv.appendChild(answerInfo);
+            });
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            document.getElementById('submitBtn').disabled = true;
+            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+                input.disabled = true;
+            });
+            const gradeResults = gradeExam();
+            displayResults(gradeResults);
+            document.getElementById('resultBox').scrollIntoView({behavior: 'smooth'});
+        }
+
+        document.getElementById('submitBtn').addEventListener('click', submitExam);
+        renderPart1();
+        renderPart2();
+        updateTimer();
+    </script>
+</body>
+</html>
